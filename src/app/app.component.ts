@@ -20,7 +20,7 @@ export class AppComponent {
     // now generate some random data
     var points = [];
     var max = 100;
-    var width = 840;
+    var width = 1000;
     var height = 1000;
     var len = 500;
 
