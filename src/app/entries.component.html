@@ -1,0 +1,31 @@
+<h1>Heatmap Test Data </h1>
+<div class="container">
+ <div class="row">
+  <div class="col-sm-12">
+	<div *ngFor = "let entries of entries_list">
+	 <div class="card text-white bg-primary mb-3">
+	  <div class="card-header">
+		Map : 
+		{{ entries.map }}
+	  </div>
+	  <div class="card-body">
+	   Round Number :
+		{{ entries.round }}
+	   Weapon Type :
+		{{ entries.wp_type }}
+	   X Posistion :
+		{{ entries.att_pos_x }}
+	   Y Posistion :
+		{{ entries.att_pos_y }}
+	   Round Type :
+		{{ entries.round_type }}
+	  </div>
+	  <div class="card-footer">
+		Weapon :
+		{{ entries.wp }}
+	  </div>
+	 </div>
+	</div>
+   </div> <!-- col -->
+  </div> <!-- row -->
+</div> <!-- container -->
