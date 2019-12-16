@@ -21,7 +21,8 @@
 <div class="container">
  <div class="row">
   <div class="col-sm-12">
-	<div class="test" *ngFor = "let entries of entries_list">
+	<div class="test" *ngFor =
+		"let entries of webService.entries_list | async">
 	 <div class="card text-white bg-primary mb-3" 
 	 	[routerLink]="['/entries', entries._id]"  
 	 	style="cursor: pointer">
@@ -49,4 +50,13 @@
 	</div>
    </div> <!-- col -->
   </div> <!-- row -->
+  
+ <div class="row"> 
+	<div class="col-sm-6">
+		<button class="btn btn-primary"(click)="previousPage()">Previous</button>
+	</div>
+	<div class="col-sm-6">
+		<button class="btn btn-primary"(click)="nextPage()">Next</button>
+	</div>
+</div>
 </div> <!-- container -->

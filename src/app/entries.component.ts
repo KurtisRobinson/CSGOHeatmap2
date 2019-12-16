@@ -13,11 +13,30 @@ export class EntriesComponent{
 	constructor(private webService: WebService) {}
 
 	async ngOnInit(){
-		var response = await this.webService.getEntries();
-		this.entries_list = response;
+		if (sessionStorage.page) {
+			this.page = sessionStorage.page;
+		}
+		this.webService.getEntries(this.page);
 	}
 	
-	entries_list;
+	nextPage() {
+		this.page = Number(this.page) - 1;
+		sessionStorage.page = Number(this.page);
+		this.webService.getEntries(this.page);
+	}
+	
+	previousPage(){
+		if (this.page > 1){
+			this.page = Number(this.page) - 1;
+			sessionStorage.page = Number(this.page);
+			this.webService.getEntries(this.page);
+		}
+	}
+	
+	
+	page = 1;
+	
+	// entries_list;
 
 	@ViewChild('map') map: ElementRef;
 
@@ -31,8 +50,8 @@ export class EntriesComponent{
     // now generate some random data
     var points = [];
     var max = 100;
-    var width = 1000;
-    var height = 1000;
+    var width = 3000;
+    var height = 3000;
     var len = 500;
 
     while (len--) {

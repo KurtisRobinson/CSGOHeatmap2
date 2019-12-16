@@ -3,6 +3,8 @@ import { WebService } from './web.service';
 import { ActivatedRoute } from '@angular/router';
 import * as h337 from 'heatmap.js';
 
+// To Do : Security work needs to be added here from C3
+
 @Component({
 	selector: 'entry',
 	templateUrl: './entry.component.html',
@@ -14,10 +16,10 @@ export class EntryComponent{
     constructor(private webService: WebService,
         private route: ActivatedRoute) {}
 
-	async ngOnInit(){
+	/* async ngOnInit(){
         var response = await this.webService.getEntry(this.route.snapshot.params.id);
 		this.entry = response;
-	}
+	} */
 	
 	entry = { };
 
@@ -33,8 +35,8 @@ export class EntryComponent{
     // now generate some random data
     var points = [];
     var max = 100;
-    var width = 1000;
-    var height = 1000;
+    var width = 3000;
+    var height = 3000;
     var len = 500;
 
     while (len--) {
