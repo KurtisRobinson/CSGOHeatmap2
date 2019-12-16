@@ -1,6 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { EntriesComponent } from './entries.component';
-import * as h337 from 'heatmap.js';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
