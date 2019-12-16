@@ -49,5 +49,17 @@
     "protractor": "~5.3.0",
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1"
-  }
+  },
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KurtisRobinson/CSGOHeatmap2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KurtisRobinson/CSGOHeatmap2/issues"
+  },
+  "homepage": "https://github.com/KurtisRobinson/CSGOHeatmap2#readme"
 }
