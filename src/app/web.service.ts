@@ -10,4 +10,7 @@ export class WebService {
 		return this.http.get('http://localhost:5000/api/v1.0/sample_match').toPromise();
 	}
 	
+	getEntry(id) {
+		return this.http.get('http://localhost:5000/api/v1.0/sample_match/' + id).toPromise();
+	}
 }

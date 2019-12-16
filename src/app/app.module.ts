@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { EntriesComponent } from './entries.component';
 import { HomeComponent } from './home.component';
+import { EntryComponent } from './entry.component';
 
 var routes = [
 	{
@@ -17,12 +18,16 @@ var routes = [
 	{
 		path: 'de_dust2',
 		component: EntriesComponent
-	}
+	},
+	{
+		path: 'entries/:id',
+		component: EntryComponent
+	},
 ];
 
 @NgModule({
   declarations: [
-    AppComponent, EntriesComponent, HomeComponent
+    AppComponent, EntriesComponent, HomeComponent, EntryComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

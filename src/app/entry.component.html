@@ -21,30 +21,26 @@
 <div class="container">
  <div class="row">
   <div class="col-sm-12">
-	<div class="test" *ngFor = "let entries of entries_list">
-	 <div class="card text-white bg-primary mb-3" 
-	 	[routerLink]="['/entries', entries._id]"  
-	 	style="cursor: pointer">
+	 <div class="card text-white bg-primary mb-3">
 	  <div class="card-header">
 		Map : 
-		{{ entries.map }}
+		{{ entry.map }}
 	  </div>
 	  <div class="card-body">
 	   Round Number :
-		{{ entries.round }}
+		{{ entry.round }}
 	   Weapon Type :
-		{{ entries.wp_type }}
+		{{ entry.wp_type }}
 	   X Posistion :
-		{{ entries.att_pos_x }}
+		{{ entry.att_pos_x }}
 	   Y Posistion :
-		{{ entries.att_pos_y }}
+		{{ entry.att_pos_y }}
 	   Round Type :
-		{{ entries.round_type }}
+		{{ entry.round_type }}
 	  </div>
 	  <div class="card-footer">
 		Weapon :
-		{{ entries.wp }}
-	  </div>
+		{{ entry.wp }}
 	 </div>
 	</div>
    </div> <!-- col -->
