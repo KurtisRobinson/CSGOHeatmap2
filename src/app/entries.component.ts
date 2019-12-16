@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { WebService } from './web.service';
 import * as h337 from 'heatmap.js';
 
 @Component({
@@ -8,6 +9,15 @@ import * as h337 from 'heatmap.js';
 })
 
 export class EntriesComponent{
+
+	constructor(private webService: WebService) {}
+
+	async ngOnInit(){
+		var response = await this.webService.getEntries();
+		this.entries_list = response;
+	}
+	
+	entries_list;
 
 	@ViewChild('map') map: ElementRef;
 
@@ -45,10 +55,4 @@ export class EntriesComponent{
     // for data initialization
     heatmapInstance.setData(data);
   }
-	
-	entries_list = [
- { "name": "Pizza Place", "city": "Coleriane", "review_count": 10 },
- { "name": "Wine Lake", "city": "Ballymoney", "review_count": 7 },
- { "name": "Beer Tavern", "city": "Ballymena", "review_count": 12 }
- ];
 }
