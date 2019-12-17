@@ -36,7 +36,6 @@ export class EntriesComponent{
 	
 	page = 1;
 	
-	// entries_list;
 
 	@ViewChild('map') map: ElementRef;
 
@@ -48,12 +47,16 @@ export class EntriesComponent{
     });
 
     // now generate some random data
+	
+	//let test_list = [{ "round": 23, "att_pos_x": 230, "att_pos_y": 200 }];
+
+	
     var points = [];
     var max = 100;
     var width = 3000;
     var height = 3000;
     var len = 500;
-
+	
     while (len--) {
       var val = Math.floor(Math.random()*100);
       max = Math.max(max, val);
@@ -66,9 +69,10 @@ export class EntriesComponent{
     }
     // heatmap data format
     var data = {
-      max: max,
+      max: 100,
       min: 10,
-      data: points
+      //data: [{ x: test_list.att_pos_x, y: test_list.att_pos_y, value: 100}]
+	  data: points
     };
     // if you have a set of datapoints always use setData instead of addData
     // for data initialization

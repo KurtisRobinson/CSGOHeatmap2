@@ -1,114 +1,29 @@
 from flask import Flask, jsonify, make_response, request
+from pymongo import MongoClient
+from bson import ObjectId
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
-
-sample_match = [
-  {
-    "ID": 1,
-    "map": "de_dust2",
-    "round": 1,
-    "att_side": "Terrorist",
-    "vic_side": "Terrorist",
-    "hp_dmg": 36,
-    "arm_dmg": 0,
-    "is_bomb_planted": "FALSE",
-    "bomb_site": "",
-    "wp": "HE",
-    "wp_type": "Grenade",
-    "winner_side": "CounterTerrorist",
-    "att_pos_x": -130.1585,
-    "att_pos_y": 304.0313,
-    "vic_pos_x": -130.1585,
-    "vic_pos_y": 304.0313,
-    "round_type": "PISTOL_ROUND"
-  },
-  {
-    "ID": 2,
-    "map": "de_dust2",
-    "round": 3,
-    "att_side": "Terrorist",
-    "vic_side": "CounterTerrorist",
-    "hp_dmg": 30,
-    "arm_dmg": 15,
-    "is_bomb_planted": "FALSE",
-    "bomb_site": "",
-    "wp": "HE",
-    "wp_type": "Grenade",
-    "winner_side": "Terrorist",
-    "att_pos_x": 203.4764,
-    "att_pos_y": 199.6772,
-    "vic_pos_x": 644.8077,
-    "vic_pos_y": 721.5629,
-    "round_type": "ECO"
-  },
-  {
-    "ID": 3,
-    "map": "de_dust2",
-    "round": 3,
-    "att_side": "Terrorist",
-    "vic_side": "Terrorist",
-    "hp_dmg": 1,
-    "arm_dmg": 0,
-    "is_bomb_planted": "FALSE",
-    "bomb_site": "",
-    "wp": "HE",
-    "wp_type": "Grenade",
-    "winner_side": "Terrorist",
-    "att_pos_x": -1121.408,
-    "att_pos_y": 1081.837,
-    "vic_pos_x": -1121.408,
-    "vic_pos_y": 1081.837,
-    "round_type": "ECO"
-  },
-  {
-    "ID": 4,
-    "map": "de_dust2",
-    "round": 4,
-    "att_side": "Terrorist",
-    "vic_side": "CounterTerrorist",
-    "hp_dmg": 2,
-    "arm_dmg": 0,
-    "is_bomb_planted": "FALSE",
-    "bomb_site": "",
-    "wp": "HE",
-    "wp_type": "Grenade",
-    "winner_side": "Terrorist",
-    "att_pos_x": 348.4612,
-    "att_pos_y": 2087.148,
-    "vic_pos_x": 1434.227,
-    "vic_pos_y": 2545.21,
-    "round_type": "SEMI_ECO"
-  },
-  {
-    "ID": 5,
-    "map": "de_dust2",
-    "round": 4,
-    "att_side": "Terrorist",
-    "vic_side": "CounterTerrorist",
-    "hp_dmg": 54,
-    "arm_dmg": 18,
-    "is_bomb_planted": "TRUE",
-    "bomb_site": "A",
-    "wp": "HE",
-    "wp_type": "Grenade",
-    "winner_side": "Terrorist",
-    "att_pos_x": 1085.885,
-    "att_pos_y": 2592.73,
-    "vic_pos_x": 387.9654,
-    "vic_pos_y": 1770.458,
-    "round_type": "SEMI_ECO"
-  }]
+client = MongoClient("mongodb://127.0.0.1:27017")
+db = client.csstats 				# Database
+sample_match = db.sample_match		# Collection
 
 @app.route("/")
 @app.route("/api/v1.0/sample_match", methods=["GET"])
 def show_all():
-	return make_response( jsonify( sample_match ), 200)
+	data_to_return = []
+	for match_data in sample_match.find():
+		match_data['_id'] = str(match_data['_id'])
+		data_to_return.append(match_data)
+	return make_response( jsonify( data_to_return ), 200)
 
 @app.route("/api/v1.0/sample_match", methods=["POST"])
 def add_data():
-	next_id = sample_match[-1]["ID"] + 1
-	new_data = { "ID": next_id,
+	if "ID" in request.form and "map" in request.form and "round" in request.form:
+		new_data = { 
+				 "ID": request.form["ID"],
 				 "map": request.form["map"],
 				 "round": request.form["round"],
 				 "att_side": request.form["att_side"],
@@ -126,46 +41,61 @@ def add_data():
 				 "vic_pos_y": request.form["vic_pos_y"],
 				 "round_type": request.form["round_type"],
 			   }
-	sample_match.append(new_data)
-	return make_response( jsonify( sample_match ), 201)
+		new_data_id = sample_match.insert_one(new_data)
+		new_data_link = "http://127.0.0.1:5000/api/v1.0/sample_match/" + str(new_data_id.inserted_id)
+		return make_response( jsonify( {"url" : new_data_link} ), 201)
+	else: 
+		return make_response( jsonify( {"error" : "Missing form data"} ), 404)
 	
 	
-@app.route("/api/v1.0/sample_match/<int:ID>", methods=["GET"])
+@app.route("/api/v1.0/sample_match/<string:ID>", methods=["GET"])
 def show_one(ID):
-	data_to_return = [ entry for entry in sample_match if entry["ID"] == ID ]
-	return make_response( jsonify( data_to_return[0] ), 200)
-
-@app.route("/api/v1.0/sample_match/<int:ID>", methods=["PUT"])
+	data_to_return = sample_match.find_one({'_id':ObjectId(ID)})
+	if data_to_return is not None:
+		data_to_return['_id'] = str(data_to_return['_id'])
+		return make_response( jsonify( data_to_return ), 200)
+	else :
+		return make_response( jsonify( {"error" : "Invalid data ID"} ), 404)
+		
+@app.route("/api/v1.0/sample_match/<string:ID>", methods=["PUT"])
 def edit_data(ID):
-	for entry in sample_match:
-		if entry["ID"] == ID:
-				 entry["map"] = request.form["map"]
-				 entry["round"] = request.form["round"]
-				 entry["att_side"] = request.form["att_side"]
-				 entry["vic_side"] = request.form["vic_side"]
-				 entry["hp_dmg"] = request.form["hp_dmg"]
-				 entry["arm_dmg"] = request.form["arm_dmg"]
-				 entry["is_bomb_planted"] = request.form["is_bomb_planted"]
-				 entry["bomb_site"] = request.form["bomb_site"]
-				 entry["wp"] = request.form["wp"]
-				 entry["wp_type"] = request.form["wp_type"]
-				 entry["winner_side"] = request.form["winner_side"]
-				 entry["att_pos_x"] = request.form["att_pos_x"]
-				 entry["att_pos_y"] = request.form["att_pos_y"]
-				 entry["vic_pos_x"] = request.form["vic_pos_x"]
-				 entry["vic_pos_y"] = request.form["vic_pos_y"]
-				 entry["round_type"] = request.form["round_type"]
-				 break
-	return make_response( jsonify( entry ), 200)	
-	
-	
-@app.route("/api/v1.0/sample_match/<int:ID>", methods=["DELETE"])
+	if "ID" in request.form and "map" in request.form and "round" in request.form:
+		edited_data = sample_match.update_one( { "_id" : ObjectId(ID) }, {
+		"$set" : { "map" : request.form["map"],
+				   "round" : request.form["round"],
+				   "att_side" : request.form["att_side"],
+				   "vic_side" : request.form["vic_side"],
+				   "hp_dmg" : request.form["hp_dmg"],
+				   "arm_dmg" : request.form["arm_dmg"],
+				   "is_bomb_planted" : request.form["is_bomb_planted"],
+				   "bomb_site" : request.form["bomb_site"],
+				   "wp" : request.form["wp"],
+				   "wp_type" : request.form["wp_type"],
+				   "winner_side" : request.form["winner_side"],
+				   "att_pos_x" : request.form["att_pos_x"],
+				   "att_pos_y" : request.form["att_pos_y"],
+				   "vic_pos_x" : request.form["vic_pos_x"],
+				   "vic_pos_y" : request.form["vic_pos_y"],
+				   "round_type" : request.form["round_type"]
+				   #"ID" : request.form["ID"] values returned in quotes.
+				 }
+		} )
+		if edited_data.matched_count == 1:
+		  edited_data_link = "http://127.0.0.1:5000/api/v1.0/sample_match/" + ID
+		  return make_response( jsonify( {"url" : edited_data_link} ), 200)	
+		else:
+		  return make_response( jsonify( {"error" : "Invalid Data ID"} ), 404)
+	else: 
+		return make_response( jsonify( {"error" : "Missing Form Data"} ), 404)
+
+
+@app.route("/api/v1.0/sample_match/<string:ID>", methods=["DELETE"])
 def delete_data(ID):
-	for entry in sample_match:
-		if entry["ID"] == ID:
-			sample_match.remove(entry)
-			break
-	return make_response( jsonify( {} ), 200)	
+	delete_entry = sample_match.delete_one( { "_id" : ObjectId(ID) } )
+	if delete_entry.deleted_count == 1:
+		return make_response( jsonify( {"Entry Status" : "Entry Deleted"} ), 200)
+	else:
+		  return make_response( jsonify( {"error" : "Invalid Data ID"} ), 404)
 	
 if __name__ == "__main__":
 	app.run(debug=True)
