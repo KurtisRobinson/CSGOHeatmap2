@@ -16,11 +16,10 @@ export class EntryComponent{
     constructor(private webService: WebService,
         private route: ActivatedRoute) {}
 
-	/* async ngOnInit(){
+	async ngOnInit(){
         var response = await this.webService.getEntry(this.route.snapshot.params.id);
-		this.entry = response;
-	} */
-	
+		this.entry = response.json;
+	}
 	entry = { };
 
 	@ViewChild('map') map: ElementRef;
@@ -31,6 +30,13 @@ export class EntryComponent{
       // only container is required, the rest will be defaults
       container: this.map.nativeElement
     });
+
+		this.webService.entries_list
+		.subscribe(entry => {
+			this.entries_list = entry;
+		})
+
+
 
     // now generate some random data
     var points = [];

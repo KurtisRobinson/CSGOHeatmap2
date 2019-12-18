@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, make_response, request
 from pymongo import MongoClient
 from bson import ObjectId
+import bcrypt
 import jwt
 import datetime
 from functools import wraps
@@ -15,6 +16,8 @@ CORS(app)
 client = MongoClient("mongodb://127.0.0.1:27017")
 db = client.csstats 				# Database
 sample_match = db.sample_match		# Collection
+users = db.users
+blacklist = db.blacklist
 
 def jwt_required(func):
 	@wraps(func)
@@ -29,21 +32,56 @@ def jwt_required(func):
 			data = jwt.decode(token, app.config['SECRET_KEY'])
 		except:
 			return jsonify({'message' : 'Token is invalid'}), 401
+		bl_token = blacklist.find_one({"token":token})
+		if bl_token is not None:
+			return make_response(jsonify({'message':'Token has been cancelled'}), 401)
 		return func(*args, **kwargs)
 	return jwt_required_wrapper
+
+
+def admin_required(func):
+	@wraps(func)
+	def admin_required_wrapper(*args, **kwargs):
+		token = request.headers['x-access-token']
+		data = jwt.decode(token, app.config['SECRET_KEY'])
+		if data["admin"]:
+			return func(*args, **kwargs)
+		else:
+			return make_response(jsonify({'message' : 'Admin Access Required'}), 401)
+	return admin_required_wrapper
+
+
+@app.route('/api/v1.0/logout', methods=["GET"])
+def logout():
+	token = None
+	if 'x-access-token' in request.headers:
+		token = request.headers['x-access-token']
+	if not token:
+		return make_response(jsonify({'message' : 'Token is missing'}), 401)
+	else:
+		blacklist.insert_one({"token" : token})
+		return make_response(jsonify({'message' : 'Logout Successful'}), 200)
+
+
 
 @app.route("/api/v1.0/login", methods=['GET'])
 def login():
 	auth = request.authorization
-	if auth and auth.password == 'password':
-		token = jwt.encode( \
-	   {'user' : auth.username, \
-		'exp' : datetime.datetime.utcnow() + \
-		datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
-		return jsonify({'token' : token.decode('UTF-8')})
-	return make_response('Could not verify', 401, \
-	{'WWW-Authenticate' : \
-	 'Basic realm = "Login required"'})
+	if auth:
+		user = users.find_one({'username' : auth.username})
+		if user is not None:
+			if bcrypt.checkpw(bytes(auth.password, 'UTF-8'), user["password"]):
+				token = jwt.encode( \
+				{'user' : auth.username,
+				 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+				}, app.config['SECRET_KEY'])
+				return make_response(jsonify({'token' : token.decode('UTF-8') }), 200)
+			else:
+				return make_response(jsonify({'token' : 'Bad Password' }), 401)
+		else:
+			return make_response(jsonify({'token' : 'Bad Username' }), 401)
+			
+	return make_response(jsonify({'token' : 'Authentication Required' }), 401)
  
 @app.route("/")
 @app.route("/api/v1.0/sample_match", methods=["GET"])
@@ -54,6 +92,7 @@ def show_all():
 		data_to_return.append(match_data)
 	return make_response( jsonify( data_to_return ), 200)
 
+@jwt_required
 @app.route("/api/v1.0/sample_match", methods=["POST"])
 def add_data():
 	if "ID" in request.form and "map" in request.form and "round" in request.form:
@@ -84,7 +123,6 @@ def add_data():
 	
 
 @app.route("/api/v1.0/sample_match/<string:ID>", methods=["GET"])
-@jwt_required	
 def show_one(ID):
 	data_to_return = sample_match.find_one({'_id':ObjectId(ID)})
 	if data_to_return is not None:
@@ -92,7 +130,8 @@ def show_one(ID):
 		return make_response( jsonify( data_to_return ), 200)
 	else :
 		return make_response( jsonify( {"error" : "Invalid data ID"} ), 404)
-		
+
+@jwt_required
 @app.route("/api/v1.0/sample_match/<string:ID>", methods=["PUT"])
 def edit_data(ID):
 	if "ID" in request.form and "map" in request.form and "round" in request.form:
@@ -124,7 +163,8 @@ def edit_data(ID):
 	else: 
 		return make_response( jsonify( {"error" : "Missing Form Data"} ), 404)
 
-
+@jwt_required
+@admin_required
 @app.route("/api/v1.0/sample_match/<string:ID>", methods=["DELETE"])
 def delete_data(ID):
 	delete_entry = sample_match.delete_one( { "_id" : ObjectId(ID) } )
