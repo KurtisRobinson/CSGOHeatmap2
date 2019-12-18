@@ -1,15 +1,50 @@
 from flask import Flask, jsonify, make_response, request
 from pymongo import MongoClient
 from bson import ObjectId
+import jwt
+import datetime
+from functools import wraps
 from flask_cors import CORS
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = 'mysecret'
+
 CORS(app)
 
 client = MongoClient("mongodb://127.0.0.1:27017")
 db = client.csstats 				# Database
 sample_match = db.sample_match		# Collection
 
+def jwt_required(func):
+	@wraps(func)
+	def jwt_required_wrapper(*args, **kwargs):
+		#token = request.args.get('token')
+		token = None
+		if 'x-access-token' in request.headers:
+			token = request.headers['x-access-token']
+		if not token:
+			return jsonify({'message' : 'Token is missing'}), 401
+		try:
+			data = jwt.decode(token, app.config['SECRET_KEY'])
+		except:
+			return jsonify({'message' : 'Token is invalid'}), 401
+		return func(*args, **kwargs)
+	return jwt_required_wrapper
+
+@app.route("/api/v1.0/login", methods=['GET'])
+def login():
+	auth = request.authorization
+	if auth and auth.password == 'password':
+		token = jwt.encode( \
+	   {'user' : auth.username, \
+		'exp' : datetime.datetime.utcnow() + \
+		datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+		return jsonify({'token' : token.decode('UTF-8')})
+	return make_response('Could not verify', 401, \
+	{'WWW-Authenticate' : \
+	 'Basic realm = "Login required"'})
+ 
 @app.route("/")
 @app.route("/api/v1.0/sample_match", methods=["GET"])
 def show_all():
@@ -47,8 +82,9 @@ def add_data():
 	else: 
 		return make_response( jsonify( {"error" : "Missing form data"} ), 404)
 	
-	
+
 @app.route("/api/v1.0/sample_match/<string:ID>", methods=["GET"])
+@jwt_required	
 def show_one(ID):
 	data_to_return = sample_match.find_one({'_id':ObjectId(ID)})
 	if data_to_return is not None:

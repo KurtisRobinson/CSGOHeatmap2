@@ -2,6 +2,7 @@
 
 1. MongoDB for data storage. 
 Database may not run if not enough space.
+Create Folder data and db folder on current disk to store data.
 Navigate to Sample Match JSON file and enter terminal commands.
 mongoimport --db csstats --collection sample_match --jsonArray sample_match.json
 mongod
@@ -12,9 +13,11 @@ db.sample_match.find().pretty()
 pip install Flask --user
 pip install flask_cors --user
 pip install pymongo --user
+pip install pyjwt --user
+pip install bcrypt --user
 python CSGO_API.py
 
-3. Display and map to heatmap.
+3. Run Angular Frontend of heatmap.
 C:\Users\Administrator
 npm install
 ng serve

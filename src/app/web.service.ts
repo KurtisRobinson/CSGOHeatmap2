@@ -7,12 +7,13 @@ import { Subject } from 'rxjs';
 export class WebService {
 	
 	private entries_private_list;
-	entriesSubject = new Subject();
+	private entriesSubject = new Subject();
 	entries_list = this.entriesSubject.asObservable();
 	
 	constructor(private http: HttpClient) {}
 	
 	getEntries(page) {
+		console.log('http://localhost:5000/api/v1.0/sample_match?pn=' + page)
 		return this.http.get(
 			'http://localhost:5000/api/v1.0/sample_match?pn=' + page)
 		.subscribe(response => { 

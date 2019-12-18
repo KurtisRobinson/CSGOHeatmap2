@@ -50,14 +50,32 @@ export class EntriesComponent{
 	
     var points = [];
     var max = 100;
-    var width = 3000;
-    var height = 3000;
+    var width = 1000;
+    var height = 1000;
     var len = 500;
+	var id = 58;
 	
-	var test_list = [{ "ID": 99, "_id": "5df98333245feb81059c5c77", "arm_dmg": 0, "att_pos_x": 459, "att_pos_y": 566, "att_side": "CounterTerrorist", "bomb_site": "", "hp_dmg": 1, "is_bomb_planted": "FALSE", "map": "de_dust2", "round": 23, "round_type": "ECO", "vic_pos_x": 333, "vic_pos_y": 1996, "vic_side": "Terrorist", "winner_side": "Terrorist", "wp": "HE","wp_type": "Grenade"
+	var test_list = [  {
+    "ID": 34,
+    "map": "de_dust2",
+    "round": 19,
+    "att_side": "CounterTerrorist",
+    "vic_side": "Terrorist",
+    "hp_dmg": 28,
+    "arm_dmg": 9,
+    "is_bomb_planted": "FALSE",
+    "bomb_site": "",
+    "wp": "HE",
+    "wp_type": "Grenade",
+    "winner_side": "CounterTerrorist",
+    "att_pos_x": 299,
+    "att_pos_y": 1195,
+    "vic_pos_x": -1876,
+    "vic_pos_y": 1808,
+    "round_type": "FORCE_BUY"
   }];
 	
-	this.webService.entriesSubject
+	this.webService.entries_list
 		.subscribe(entries => {
 			this.entries_list = entries
 			test_list.push.apply(test_list, this.entries_list);
@@ -68,12 +86,14 @@ export class EntriesComponent{
 	//console.log(test_list[1].att_pos_x);
 	
 	
-    while (len--) {
+    while (id--) {
       var val = Math.floor(Math.random()*100);
       max = Math.max(max, val);
       var point = {
         x: Math.floor(Math.random()*width),
+		//x: test_list[id].att_pos_x,
         y: Math.floor(Math.random()*height),
+		//y: test_list[id].att_pos_y,
         value: val
       };
       points.push(point);
