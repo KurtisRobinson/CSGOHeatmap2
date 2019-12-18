@@ -10,6 +10,9 @@ export class WebService {
 	private entriesSubject = new Subject();
 	entries_list = this.entriesSubject.asObservable();
 	
+	
+	finalResort = [];
+
 	constructor(private http: HttpClient) {}
 	
 	getEntries(page) {
