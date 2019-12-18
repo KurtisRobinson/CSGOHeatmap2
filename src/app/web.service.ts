@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 export class WebService {
 	
 	private entries_private_list;
-	private entriesSubject = new Subject();
+	entriesSubject = new Subject();
 	entries_list = this.entriesSubject.asObservable();
 	
 	constructor(private http: HttpClient) {}

@@ -48,14 +48,23 @@ export class EntriesComponent{
 
     // now generate some random data
 	
-	//let test_list = [{ "round": 23, "att_pos_x": 230, "att_pos_y": 200 }];
-
+	var test_list = [{ "round": 23, "att_pos_x": 230, "att_pos_y": 200 }];
 	
     var points = [];
     var max = 100;
     var width = 3000;
     var height = 3000;
     var len = 500;
+	
+	this.webService.entriesSubject
+		.subscribe(entries => {
+			this.entries_list = entries
+			test_list.push.apply(test_list, this.entries_list);
+			console.log(test_list);
+		})
+	
+	console.log(test_list);
+	
 	
     while (len--) {
       var val = Math.floor(Math.random()*100);
