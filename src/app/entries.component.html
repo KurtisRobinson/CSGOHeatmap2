@@ -25,7 +25,7 @@
  <div class="row">
   <div class="col-sm-12">
 	<div class="test" *ngFor =
-		"let entries of webService.entries_list | async">
+		"let entries of entries_list">
 	 <div class="card text-white bg-primary mb-3" 
 	 	[routerLink]="['/entries', entries._id]"  
 	 	style="cursor: pointer">

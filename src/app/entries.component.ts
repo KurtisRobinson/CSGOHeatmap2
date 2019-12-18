@@ -12,7 +12,7 @@ export class EntriesComponent{
 
 	constructor(private webService: WebService) {}
 
-	async ngOnInit(){
+	ngOnInit(){
 		if (sessionStorage.page) {
 			this.page = sessionStorage.page;
 		}
@@ -48,22 +48,24 @@ export class EntriesComponent{
 
     // now generate some random data
 	
-	var test_list = [{ "round": 23, "att_pos_x": 230, "att_pos_y": 200 }];
-	
     var points = [];
     var max = 100;
     var width = 3000;
     var height = 3000;
     var len = 500;
 	
+	var test_list = [{ "ID": 99, "_id": "5df98333245feb81059c5c77", "arm_dmg": 0, "att_pos_x": 459, "att_pos_y": 566, "att_side": "CounterTerrorist", "bomb_site": "", "hp_dmg": 1, "is_bomb_planted": "FALSE", "map": "de_dust2", "round": 23, "round_type": "ECO", "vic_pos_x": 333, "vic_pos_y": 1996, "vic_side": "Terrorist", "winner_side": "Terrorist", "wp": "HE","wp_type": "Grenade"
+  }];
+	
 	this.webService.entriesSubject
 		.subscribe(entries => {
 			this.entries_list = entries
 			test_list.push.apply(test_list, this.entries_list);
-			console.log(test_list);
 		})
-	
+	//Data is retrieved from MongoDB and assigned to test_list
 	console.log(test_list);
+	console.log(test_list[0].att_pos_x);
+	//console.log(test_list[1].att_pos_x);
 	
 	
     while (len--) {
