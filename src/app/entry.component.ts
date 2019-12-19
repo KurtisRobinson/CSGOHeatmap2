@@ -16,30 +16,16 @@ export class EntryComponent{
     constructor(private webService: WebService,
         private route: ActivatedRoute) {}
 
-	async ngOnInit(){
-		console.log(this.webService.getEntry(this.route.snapshot.params.id));
-		var response = await this.webService.getEntry(this.route.snapshot.params.id);
-		this.entry = response;
-		console.log(this.entry.att_pos_x);
-	}
-	
-	entry = []
-	
 	@ViewChild('map') map: ElementRef;
-
-    asyc ngAfterViewInit(){
-    // minimal heatmap instance configuration
-    var heatmapInstance = h337.create({
-      // only container is required, the rest will be defaults
-      container: this.map.nativeElement
-    });
 	
+	async ngOnInit(){
+	console.log(this.webService.getEntry(this.route.snapshot.params.id));
+	var response = await this.webService.getEntry(this.route.snapshot.params.id);
+	this.entry = response;
+		
+	var heatmapInstance = h337.create({container: this.map.nativeElement});
 
-	
-	var x_cord;
-	console.log(this.newpoints);
-	console.log(this.entry.att_pos_x);
-	var y_cord;
+	console.log(this.entry)
     // now generate some random data
     var points = [];
     var max = 100;
@@ -51,8 +37,8 @@ export class EntryComponent{
       var val = Math.floor(Math.random()*100);
       max = Math.max(max, val);
       var point = {
-        x: Math.floor(Math.random()*width),
-        y: Math.floor(Math.random()*height),
+        x: this.entry.att_pos_x,
+        y: this.entry.att_pos_y,
         value: val
       };
       points.push(point);
@@ -66,5 +52,12 @@ export class EntryComponent{
     // if you have a set of datapoints always use setData instead of addData
     // for data initialization
     heatmapInstance.setData(data);
+		
+	}
+	
+	entry = []
+	
+
+    asyc ngAfterViewInit(){
   }
 }
