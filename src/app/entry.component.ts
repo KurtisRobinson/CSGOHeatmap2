@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { WebService } from './web.service';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import * as h337 from 'heatmap.js';
 
 // To Do : Security work needs to be added here from C3
@@ -17,8 +17,29 @@ export class EntryComponent{
 	entry = []
 	dataForm;
 	
-    constructor(private webService: WebService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
-		this.dataForm = this.formBuilder.group({new_map: '', new_pos_x: '', new_pos_y: '', new_dmg: ''});
+    constructor(private webService: WebService, private route: ActivatedRoute, private formBuilder: FormBuilder) 
+	{
+		this.dataForm = this.formBuilder.group(
+	   {
+		new_id: '',
+		new_arm_dmg: '',		
+		new_pos_x: ['', Validators.required] 
+		new_pos_y: ['', Validators.required]
+		new_att_side: '',
+		new_site: '',
+		new_dmg: '',
+		new_is_planted: '',
+		new_map: '',
+		new_round: '',
+		new_round_type: '',
+		new_vic_x: '',
+		new_vic_y: '',
+		new_vic_side: '',
+		new_win_side: '',
+		new_wp: '',
+		new_wp_type: '',
+		}
+	  );
 	}
 
 	@ViewChild('map') map: ElementRef;
@@ -59,15 +80,32 @@ export class EntryComponent{
     };
     // if you have a set of datapoints always use setData instead of addData
     // for data initialization
-    heatmapInstance.setData(data);
-		
+    heatmapInstance.setData(data);	
 	}
 
     asyc ngAfterViewInit(){
-		
 	}
 	
 	onSubmit(){
 		console.log(this.dataForm.value);
+		console.log("Data is valid :" + this.dataForm.valid);
+		this.webService.postEntry(this.dataForm.value);
+		this.dataForm.reset();
+	}
+	
+	
+	isInvalid(control){
+		return this.dataForm.controls[control].invalid && this.dataForm.controls[control].touched;
+	}
+	
+	isUnTouched(){
+		return this.dataForm.controls.controls.new_pos_x.pristine || 
+		this.dataForm.controls.controls.new_pos_y.pristine ;
+	}
+	
+	isIncomplete(){
+		return this.isInvalid('new_pos_x') || 
+		this.isInvalid('new_pos_y') || 
+		this.isUnTouched();
 	}
 }

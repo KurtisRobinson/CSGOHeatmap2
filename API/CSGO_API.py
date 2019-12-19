@@ -92,10 +92,9 @@ def show_all():
 		data_to_return.append(match_data)
 	return make_response( jsonify( data_to_return ), 200)
 
-@jwt_required
-@app.route("/api/v1.0/sample_match", methods=["POST"])
+
+@app.route("/api/v1.0/sample_match/new", methods=["POST"])
 def add_data():
-	if "ID" in request.form and "map" in request.form and "round" in request.form:
 		new_data = { 
 				 "ID": request.form["ID"],
 				 "map": request.form["map"],
@@ -116,10 +115,8 @@ def add_data():
 				 "round_type": request.form["round_type"],
 			   }
 		new_data_id = sample_match.insert_one(new_data)
-		new_data_link = "http://127.0.0.1:5000/api/v1.0/sample_match/" + str(new_data_id.inserted_id)
-		return make_response( jsonify( {"url" : new_data_link} ), 201)
-	else: 
-		return make_response( jsonify( {"error" : "Missing form data"} ), 404)
+		#new_data_link = "http://127.0.0.1:5000/api/v1.0/sample_match/" + str(new_data_id.inserted_id)
+		return make_response( jsonify("Ok"), 201)
 	
 
 @app.route("/api/v1.0/sample_match/<string:ID>", methods=["GET"])

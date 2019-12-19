@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from './auth.service';
 
 import { WebService } from './web.service';
 import { AppComponent } from './app.component';
@@ -33,7 +34,7 @@ var routes = [
     BrowserModule, HttpClientModule,
 	RouterModule.forRoot(routes), FormsModule, ReactiveFormsModule
   ],
-  providers: [WebService],
+  providers: [WebService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
