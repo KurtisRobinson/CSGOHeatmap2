@@ -49,9 +49,7 @@ export class EntryComponent{
 	console.log(this.webService.getEntry(this.route.snapshot.params.id));
 	var response = await this.webService.getEntry(this.route.snapshot.params.id);
 	this.entry = response;
-	
-	//this.dataForm = this.formBuilder.group({new_map: '', new_pos_x: '', new_pos_y: '', new_dmg: ''});
-	
+
 	var heatmapInstance = h337.create({container: this.map.nativeElement});
 
 	console.log(this.entry)

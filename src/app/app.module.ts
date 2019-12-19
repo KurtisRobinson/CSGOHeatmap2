@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { EntriesComponent } from './entries.component';
 import { HomeComponent } from './home.component';
 import { EntryComponent } from './entry.component';
+import { NavComponent } from './nav.component';
 
 var routes = [
 	{
@@ -28,7 +29,7 @@ var routes = [
 
 @NgModule({
   declarations: [
-    AppComponent, EntriesComponent, HomeComponent, EntryComponent
+    AppComponent, EntriesComponent, HomeComponent, EntryComponent, NavComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

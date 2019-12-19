@@ -1,7 +1,3 @@
-<div class="jumbotron">
-<h1>CSGO Stats Directory</h1><br>
-<h1>Dust 2 Heatmap</h1>
-</div>
 <body>
 <style>
 	  #map { width: 1023px; height: 1023px;}
@@ -29,6 +25,8 @@
 	 	[routerLink]="['/entries', entries._id]"  
 	 	style="cursor: pointer">
 	  <div class="card-header">
+	    ID : 
+		{{ entries._id }}
 		Map : 
 		{{ entries.map }}
 	  </div>
@@ -52,13 +50,93 @@
 	</div>
    </div> <!-- col -->
   </div> <!-- row -->
-  
- <div class="row"> 
+</div>
+<div class="jumbotron">
+<h1>Add Data </h1>
+</div>
+<div class="container">
+ <div class="row">
+  <div class="col-sm-12">
+	<h2>Please submit new data</h2>
+		<form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+		<div class="form-group">
+			<label for="new_id">Entry ID</label>
+			<input type="number" id="new_id" ID="new_id" class="form-control" formControlName="new_id">
+		</div>
+		<div class="form-group">
+			<label for="new_arm_dmg">Armour Damage</label>
+			<input type="number" id="new_arm_dmg" arm_dmg="new_arm_dmg" class="form-control" formControlName="new_arm_dmg">
+		</div>
+		<div class="form-group">
+			<label for="new_pos_x">X Posistion (Whole number posistion between 1 and 1000)</label>
+			<input type="number" id="new_pos_x" att_pos_x="new_pos_x" class="form-control" formControlName="new_pos_x" [ngClass]="{ 'error': isInvalid('new_pos_x')}">
+		</div>
+		<div class="form-group">
+			<label for="new_pos_y">Y Posistion (Whole number posistion between 1 and 1000)</label>
+			<input type="number" id="new_pos_y" att_pos_y="new_pos_y" class="form-control" formControlName="new_pos_y" [ngClass]="{ 'error': isInvalid('new_pos_y')}">
+		</div>
+		<div class="form-group">
+			<label for="new_att_side">Attacking Side</label>
+			<input type="text" id="new_att_side" att_side="new_att_side" class="form-control" formControlName="new_att_side">
+		</div>
+		<div class="form-group">
+			<label for="new_site">Bomb Site</label>
+			<input type="text" id="new_site" bomb_site="new_site" class="form-control" formControlName="new_site">
+		</div>
+		<div class="form-group">
+			<label for="new_dmg">HP Damage dealt to player (0 to 100)</label>
+			<input type="number" id="new_dmg" hp_dmg="new_dmg" class="form-control" formControlName="new_dmg">
+		</div>
+		<div class="form-group">
+			<label for="new_is_planted">Bomb Planted?</label>
+			<input type="text" id="new_is_planted" is_bomb_planted="new_is_planted" class="form-control" formControlName="new_is_planted">
+		</div>
+		<div class="form-group">
+			<label for="new_map">Game Map</label>
+			<input type="text" id="new_map" map="new_map" class="form-control" formControlName="new_map">
+		</div>
+		<div class="form-group">
+			<label for="new_round">Game Round</label>
+			<input type="number" id="new_round" round="new_round" class="form-control" formControlName="new_round">
+		</div>
+		<div class="form-group">
+			<label for="new_round_type">Round Type</label>
+			<input type="text" id="new_round_type" round_type="new_round_type" class="form-control" formControlName="new_round_type">
+		</div>
+		<div class="form-group">
+			<label for="new_vic_x">Victor X</label>
+			<input type="number" id="new_vic_x" vic_pos_x="new_vic_x" class="form-control" formControlName="new_vic_x">
+		</div>
+		<div class="form-group">
+			<label for="new_vic_y">Victor Y</label>
+			<input type="number" id="new_vic_y" map="new_vic_y" class="form-control" formControlName="new_vic_y">
+		</div>
+		<div class="form-group">
+			<label for="new_vic_side">Victor Side</label>
+			<input type="text" id="new_vic_side" vic_side="new_vic_side" class="form-control" formControlName="new_vic_side">
+		</div>
+		<div class="form-group">
+			<label for="new_win_side">Winner Side</label>
+			<input type="text" id="new_win_side" winner_side="new_win_side" class="form-control" formControlName="new_win_side">
+		</div>
+		<div class="form-group">
+			<label for="new_wp">Weapon</label>
+			<input type="text" id="new_wp" winner_side="new_wp" class="form-control" formControlName="new_wp">
+		</div>
+		<div class="form-group">
+			<label for="new_wp_type">Weapon Type</label>
+			<input type="text" id="new_wp_type" winner_side="new_wp_type" class="form-control" formControlName="new_wp_type">
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	 </form>
+	</div>
+  </div> <!-- row -->
+</div> <!-- col -->  
+<!--  <div class="row"> 
 	<div class="col-sm-6">
 		<button class="btn btn-primary"(click)="previousPage()">Previous</button>
 	</div>
 	<div class="col-sm-6">
 		<button class="btn btn-primary"(click)="nextPage()">Next</button>
 	</div>
-</div>
-</div> <!-- container -->
+</div> -->

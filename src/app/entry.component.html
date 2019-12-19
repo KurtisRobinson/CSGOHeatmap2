@@ -1,7 +1,3 @@
-<div class="jumbotron">
-<h1>CSGO Stats Directory</h1>
-<h1>Entry Directory</h1>
-</div>
 <body>
 <style>
 	  #map { width: 1023px; height: 1023px;}
@@ -26,6 +22,8 @@
   <div class="col-sm-12">
 	 <div class="card text-white bg-primary mb-3">
 	  <div class="card-header">
+	    ID : 
+		{{ entry._id }}
 		Map : 
 		{{ entry.map }}
 	  </div>
@@ -52,12 +50,12 @@
   </div> <!-- row -->
  </div>
 <div class="jumbotron">
-<h1>Add Data </h1>
+<h1>Edit Data</h1>
 </div>
 <div class="container">
  <div class="row">
   <div class="col-sm-12">
-	<h2>Please submit new data</h2>
+	<h2>Edit Data Form</h2>
 		<form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
 		<div class="form-group">
 			<label for="new_id">Entry ID</label>
