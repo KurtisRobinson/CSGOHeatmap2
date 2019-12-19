@@ -12,32 +12,34 @@ import * as h337 from 'heatmap.js';
 })
 
 export class EntryComponent{
-
+	
     constructor(private webService: WebService,
         private route: ActivatedRoute) {}
 
 	async ngOnInit(){
-        var response = await this.webService.getEntry(this.route.snapshot.params.id);
-		this.entry = response.json;
+		console.log(this.webService.getEntry(this.route.snapshot.params.id));
+		var response = await this.webService.getEntry(this.route.snapshot.params.id);
+		this.entry = response;
+		console.log(this.entry.att_pos_x);
 	}
-	entry = { };
-
+	
+	entry = []
+	
 	@ViewChild('map') map: ElementRef;
 
-  ngAfterViewInit(){
+    asyc ngAfterViewInit(){
     // minimal heatmap instance configuration
     var heatmapInstance = h337.create({
       // only container is required, the rest will be defaults
       container: this.map.nativeElement
     });
+	
 
-		this.webService.entries_list
-		.subscribe(entry => {
-			this.entries_list = entry;
-		})
-
-
-
+	
+	var x_cord;
+	console.log(this.newpoints);
+	console.log(this.entry.att_pos_x);
+	var y_cord;
     // now generate some random data
     var points = [];
     var max = 100;

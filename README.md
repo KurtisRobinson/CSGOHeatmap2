@@ -4,7 +4,7 @@
 Database may not run if not enough space.
 Create Folder data and db folder on current disk to store data.
 Navigate to Sample Match JSON file and enter terminal commands.
-mongoimport --db csstats --collection sample_match --jsonArray sample_match.json
+mongoimport --db csstats --collection sample_match --jsonArray sample_improved.json
 mongod
 use csstats
 db.sample_match.find().pretty()

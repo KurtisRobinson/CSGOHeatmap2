@@ -12,13 +12,12 @@ export class EntriesComponent{
 
 	constructor(private webService: WebService) {}
 
+	
 	ngOnInit(){
 		if (sessionStorage.page) {
 			this.page = sessionStorage.page;
 		}
 		this.webService.getEntries(this.page);
-		
-		
 	}
 	
 	nextPage() {
@@ -90,8 +89,6 @@ _entries;
 			console.log([healthArray])
 			
 			heatmapInstance.setData({max: 100, min: 10, data:healthArray});
-			
-			
 		})
   }
 }
