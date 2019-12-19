@@ -31,15 +31,17 @@
 	  </div>
 	  <div class="card-body">
 	   Round Number :
-		{{ entry.round }}
+		{{ entry.round }},
 	   Weapon Type :
-		{{ entry.wp_type }}
+		{{ entry.wp_type }},
 	   X Posistion :
-		{{ entry.att_pos_x }}
+		{{ entry.att_pos_x }},
 	   Y Posistion :
-		{{ entry.att_pos_y }}
+		{{ entry.att_pos_y }},
 	   Round Type :
-		{{ entry.round_type }}
+		{{ entry.round_type }},
+	   HP Damage Dealt :
+		{{ entry.hp_dmg }},
 	  </div>
 	  <div class="card-footer">
 		Weapon :
@@ -48,3 +50,33 @@
 	</div>
    </div> <!-- col -->
   </div> <!-- row -->
+ </div>
+<div class="jumbotron">
+<h1>Add Data </h1>
+</div>
+<div class="container">
+ <div class="row">
+  <div class="col-sm-12">
+	<h2>Please submit new data</h2>
+		<form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+		<div class="form-group">
+			<label for="new_map">Game Map (de_dust2, de_mirage, de_cache)</label>
+			<input type="text" id="new_map" map="new_map" class="form-control" formControlName="new_map">
+		</div>
+		<div class="form-group">
+			<label for="new_pos_x">X Posistion (Whole number posistion between 1 and 1000)</label>
+			<input type="number" id="new_pos_x" att_pos_x="new_pos_x" class="form-control" formControlName="new_pos_x">
+		</div>
+		<div class="form-group">
+			<label for="new_pos_y">Y Posistion (Whole number posistion between 1 and 1000)</label>
+			<input type="number" id="new_pos_y" att_pos_y="new_pos_y" class="form-control" formControlName="new_pos_y">
+		</div>
+		<div class="form-group">
+			<label for="new_dmg">HP Damage dealt to player (0 to 100)</label>
+			<input type="number" id="new_dmg" hp_dmg="new_dmg" class="form-control" formControlName="new_dmg">
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	 </form>
+	</div>
+  </div> <!-- row -->
+</div> <!-- col -->

@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { WebService } from './web.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { WebService } from './web.service';
 import { AppComponent } from './app.component';
 import { EntriesComponent } from './entries.component';
 import { HomeComponent } from './home.component';
@@ -31,7 +31,7 @@ var routes = [
   ],
   imports: [
     BrowserModule, HttpClientModule,
-	RouterModule.forRoot(routes)
+	RouterModule.forRoot(routes), FormsModule, ReactiveFormsModule
   ],
   providers: [WebService],
   bootstrap: [AppComponent]

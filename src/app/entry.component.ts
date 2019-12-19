@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { WebService } from './web.service';
 import { ActivatedRoute } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 import * as h337 from 'heatmap.js';
 
 // To Do : Security work needs to be added here from C3
@@ -13,16 +14,23 @@ import * as h337 from 'heatmap.js';
 
 export class EntryComponent{
 	
-    constructor(private webService: WebService,
-        private route: ActivatedRoute) {}
+	entry = []
+	dataForm;
+	
+    constructor(private webService: WebService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
+		this.dataForm = this.formBuilder.group({new_map: '', new_pos_x: '', new_pos_y: '', new_dmg: ''});
+	}
 
 	@ViewChild('map') map: ElementRef;
 	
 	async ngOnInit(){
+	
 	console.log(this.webService.getEntry(this.route.snapshot.params.id));
 	var response = await this.webService.getEntry(this.route.snapshot.params.id);
 	this.entry = response;
-		
+	
+	//this.dataForm = this.formBuilder.group({new_map: '', new_pos_x: '', new_pos_y: '', new_dmg: ''});
+	
 	var heatmapInstance = h337.create({container: this.map.nativeElement});
 
 	console.log(this.entry)
@@ -54,10 +62,12 @@ export class EntryComponent{
     heatmapInstance.setData(data);
 		
 	}
-	
-	entry = []
-	
 
     asyc ngAfterViewInit(){
-  }
+		
+	}
+	
+	onSubmit(){
+		console.log(this.dataForm.value);
+	}
 }
