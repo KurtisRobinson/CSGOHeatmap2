@@ -13,9 +13,9 @@ import * as h337 from 'heatmap.js';
 })
 
 export class EntryComponent{
-	
-	entry = []
+	entry = [];
 	dataForm;
+	
 	
     constructor(private webService: WebService, private route: ActivatedRoute, private formBuilder: FormBuilder) 
 	{
