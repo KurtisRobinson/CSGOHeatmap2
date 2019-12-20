@@ -129,9 +129,9 @@ def show_one(ID):
 		return make_response( jsonify( {"error" : "Invalid data ID"} ), 404)
 
 @jwt_required
-@app.route("/api/v1.0/sample_match/<string:ID>", methods=["PUT"])
+@app.route("/api/v1.0/sample_match/edit/<string:ID>", methods=["PUT"])
 def edit_data(ID):
-	if "ID" in request.form and "map" in request.form and "round" in request.form:
+	if "map" in request.form and "round" in request.form:
 		edited_data = sample_match.update_one( { "_id" : ObjectId(ID) }, {
 		"$set" : { "map" : request.form["map"],
 				   "round" : request.form["round"],

@@ -23,9 +23,9 @@
 	 <div class="card text-white bg-primary mb-3">
 	  <div class="card-header">
 	    ID : 
-		{{ entry._id }}
+		{{ entry._id }},
 		Map : 
-		{{ entry.map }}
+		{{ entry.map }},
 	  </div>
 	  <div class="card-body">
 	   Round Number :
@@ -59,7 +59,7 @@
 		<form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
 		<div class="form-group">
 			<label for="new_id">Entry ID</label>
-			<input type="number" id="new_id" ID="new_id" class="form-control" formControlName="new_id">
+			<input type="text" id="new_id" ID="new_id" class="form-control" formControlName="new_id">
 		</div>
 		<div class="form-group">
 			<label for="new_arm_dmg">Armour Damage</label>

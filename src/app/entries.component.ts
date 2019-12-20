@@ -11,14 +11,15 @@ import * as h337 from 'heatmap.js';
 })
 
 export class EntriesComponent{
+	entries_list;
 
 	constructor(private webService: WebService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
 		this.dataForm = this.formBuilder.group(
 	   {
 		new_id: '',
 		new_arm_dmg: '',		
-		new_pos_x: ['', Validators.required] 
-		new_pos_y: ['', Validators.required]
+		new_pos_x: ['', Validators.required],
+		new_pos_y: ['', Validators.required],
 		new_att_side: '',
 		new_site: '',
 		new_dmg: '',
@@ -33,7 +34,7 @@ export class EntriesComponent{
 		new_wp: '',
 		new_wp_type: '',
 		}
-	  );	
+	  )	
 	}
 
 	dataForm;
@@ -59,13 +60,12 @@ export class EntriesComponent{
 		}
 	}
 	
-	_entries;
+	entries;
 	page = 1;
 	
 
 	@ViewChild('map') map: ElementRef;
 
-_entries;
 
   ngAfterViewInit(){
     // minimal heatmap instance configuration
@@ -92,15 +92,12 @@ _entries;
 	
 	this.webService.entries_list
 		.subscribe(entries => {
-			console.log(this.listHolding);
 
-			this.webService.entries_list = entries
+			//this.webService.entries_list = entries
 			
 			console.log(this.webService.finalResort)
 					
 			var healthArray = []
-	
-			console.log(this.webService.entries_private_list)
 			
 			for (let item of this.webService.entries_private_list){
 				let conversion = {
@@ -122,6 +119,7 @@ _entries;
 		console.log("Data is valid :" + this.dataForm.valid);
 		this.webService.postEntry(this.dataForm.value);
 		this.dataForm.reset();
+		//$Window.location.reload();
 	}
 	
 	

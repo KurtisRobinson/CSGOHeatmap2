@@ -2,7 +2,7 @@
 
 1. MongoDB for data storage. 
 Database may not run if not enough space.
-Create Folder data and db folder on current disk to store data.
+Create Folder data and db folder on current disk to store data E.g. C:/data/db .
 Navigate to Sample Match JSON file and enter terminal commands.
 mongoimport --db csstats --collection sample_match --jsonArray sample_improved.json
 mongod

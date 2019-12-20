@@ -13,7 +13,7 @@ import * as h337 from 'heatmap.js';
 })
 
 export class EntryComponent{
-	entry = [];
+	entry;
 	dataForm;
 	
 	
@@ -23,8 +23,8 @@ export class EntryComponent{
 	   {
 		new_id: '',
 		new_arm_dmg: '',		
-		new_pos_x: ['', Validators.required] 
-		new_pos_y: ['', Validators.required]
+		new_pos_x: ['', Validators.required],
+		new_pos_y: ['', Validators.required],
 		new_att_side: '',
 		new_site: '',
 		new_dmg: '',
@@ -39,7 +39,7 @@ export class EntryComponent{
 		new_wp: '',
 		new_wp_type: '',
 		}
-	  );
+	  )
 	}
 
 	@ViewChild('map') map: ElementRef;
@@ -59,14 +59,34 @@ export class EntryComponent{
     var width = 3000;
     var height = 3000;
     var len = 500;
+	
+	this.dataForm.controls['new_id'].setValue(this.entry._id);
+	this.dataForm.controls['new_arm_dmg'].setValue(this.entry.arm_dmg);
+	this.dataForm.controls['new_pos_x'].setValue(this.entry.att_pos_x);
+	this.dataForm.controls['new_pos_y'].setValue(this.entry.att_pos_y);
+	this.dataForm.controls['new_att_side'].setValue(this.entry.att_side);
+	this.dataForm.controls['new_site'].setValue(this.entry.bomb_site);
+	this.dataForm.controls['new_dmg'].setValue(this.entry.hp_dmg);
+	this.dataForm.controls['new_is_planted'].setValue(this.entry.is_bomb_planted);
+	this.dataForm.controls['new_map'].setValue(this.entry.map);
+	this.dataForm.controls['new_round'].setValue(this.entry.round);
+	this.dataForm.controls['new_round_type'].setValue(this.entry.round_type);
+	this.dataForm.controls['new_vic_x'].setValue(this.entry.vic_pos_x);
+	this.dataForm.controls['new_vic_y'].setValue(this.entry.vic_pos_y);
+	this.dataForm.controls['new_vic_side'].setValue(this.entry.vic_side);
+	this.dataForm.controls['new_win_side'].setValue(this.entry.winner_side);
+	this.dataForm.controls['new_wp'].setValue(this.entry.wp);
+	this.dataForm.controls['new_wp_type'].setValue(this.entry.wp_type);
 
+	
+	
     while (len--) {
       var val = Math.floor(Math.random()*100);
       max = Math.max(max, val);
       var point = {
         x: this.entry.att_pos_x,
         y: this.entry.att_pos_y,
-        value: val
+        value: 100-this.entry.hp_dmg
       };
       points.push(point);
     }
@@ -81,16 +101,16 @@ export class EntryComponent{
     heatmapInstance.setData(data);	
 	}
 
-    asyc ngAfterViewInit(){
+	ngAfterViewInit()
+	{
 	}
 	
 	onSubmit(){
 		console.log(this.dataForm.value);
 		console.log("Data is valid :" + this.dataForm.valid);
-		this.webService.postEntry(this.dataForm.value);
+		this.webService.updateEntry(this.dataForm.value);
 		this.dataForm.reset();
 	}
-	
 	
 	isInvalid(control){
 		return this.dataForm.controls[control].invalid && this.dataForm.controls[control].touched;
