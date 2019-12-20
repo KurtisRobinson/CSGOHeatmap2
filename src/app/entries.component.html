@@ -15,7 +15,7 @@
 	</div>
 </div>
 <div class="jumbotron"> 
-<h1>Heatmap Data </h1>
+<h1>Heatmap Data</h1>
 </div>
 <div class="container">
  <div class="row">
@@ -54,10 +54,10 @@
 <div class="jumbotron">
 <h1>Add Data </h1>
 </div>
-<div class="container">
+<div *ngIf="authService.loggedIn" class="container">
  <div class="row">
   <div class="col-sm-12">
-	<h2>Please submit new data</h2>
+	<h2>Please login to submit new data</h2>
 		<form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
 		<div class="form-group">
 			<label for="new_id">Entry ID</label>
@@ -131,4 +131,11 @@
 	 </form>
 	</div>
   </div> <!-- row -->
-</div> <!-- col -->  
+</div> <!-- col -->
+<div *ngIf="!authService.loggedIn" class="container">
+	<div class="row">
+		<div class="col-sm-12">
+		<h2>Please login to add data</h2>
+		</div>
+	</div>
+</div>  

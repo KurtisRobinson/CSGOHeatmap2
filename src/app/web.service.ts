@@ -81,7 +81,7 @@ export class WebService {
 		console.log("Data to be sent :" + updateData.get("arm_dmg"))
 		this.http.put('http://localhost:5000/api/v1.0/sample_match/edit/' + data.new_id, updateData).subscribe(response => console.log(response));
 	}
-	deleteEntry(data){
-	
+	deleteEntry(id) {
+		return this.http.delete('http://localhost:5000/api/v1.0/sample_match/' + id).toPromise();
 	}
 }

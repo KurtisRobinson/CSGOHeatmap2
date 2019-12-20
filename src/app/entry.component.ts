@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { WebService } from './web.service';
+import { AuthService } from './auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as h337 from 'heatmap.js';
@@ -17,7 +18,7 @@ export class EntryComponent{
 	dataForm;
 	
 	
-    constructor(private webService: WebService, private route: ActivatedRoute, private formBuilder: FormBuilder) 
+    constructor(private webService: WebService, private authService: AuthService, private route: ActivatedRoute, private formBuilder: FormBuilder) 
 	{
 		this.dataForm = this.formBuilder.group(
 	   {
@@ -110,6 +111,10 @@ export class EntryComponent{
 		console.log("Data is valid :" + this.dataForm.valid);
 		this.webService.updateEntry(this.dataForm.value);
 		this.dataForm.reset();
+	}
+	
+	onDelete(){
+		this.webService.deleteEntry(this.route.snapshot.params.id);
 	}
 	
 	isInvalid(control){

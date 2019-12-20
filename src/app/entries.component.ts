@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { WebService } from './web.service';
+import { AuthService } from './auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as h337 from 'heatmap.js';
@@ -13,7 +14,7 @@ import * as h337 from 'heatmap.js';
 export class EntriesComponent{
 	entries_list;
 
-	constructor(private webService: WebService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
+	constructor(private webService: WebService, private authService: AuthService,  private route: ActivatedRoute, private formBuilder: FormBuilder) {
 		this.dataForm = this.formBuilder.group(
 	   {
 		new_id: '',

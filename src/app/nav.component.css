@@ -1,0 +1,5 @@
+.ul {float: left;, margin-right: 200px;}
+
+#big {
+	flex-direction: row;
+}
